@@ -1,7 +1,7 @@
 package membot
 
 import (
-	"go-dev-v3/GoSearch/pkg/crawler"
+	"go2022/pkg/crawler"
 )
 
 // Service - имитация служба поискового робота.
@@ -14,7 +14,7 @@ func New() *Service {
 }
 
 // Scan возвращает заранее подготовленный набор данных
-func (s *Service) Scan(url string, depth int) ([]crawler.Document, error) {
+func (s *Service) Scan(url string, depth int) []crawler.Document {
 
 	data := []crawler.Document{
 		{
@@ -29,5 +29,5 @@ func (s *Service) Scan(url string, depth int) ([]crawler.Document, error) {
 		},
 	}
 
-	return data, nil
+	return data
 }
