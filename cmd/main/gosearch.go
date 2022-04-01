@@ -4,8 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"go2022/pkg/crawler/spider"
+	"go2022/pkg/index/hash"
 	"log"
-	"strings"
+	"sort"
 )
 
 const (
@@ -15,18 +16,51 @@ const (
 
 func main() {
 	var flagVar string
+	var depthVar int
 	flag.StringVar(&flagVar, "s", "", "string to scan")
+	flag.IntVar(&depthVar, "d", 2, "scanning depth")
 	flag.Parse()
 
+	index := hash.New()
 	scanner := spider.New()
-	data, err := scanner.Scan(urlGoDev, 2)
-	data, err = scanner.Scan(urlGolangOrg, 2)
+	data, err := scanner.Scan(urlGoDev, depthVar)
+	data, err = scanner.Scan(urlGolangOrg, depthVar)
 	if err != nil {
 		log.Fatal(err)
 	}
-	for i := 0; i < len(data); i++ {
-		if strings.Contains(strings.ToLower(data[i].URL), strings.ToLower(flagVar)) {
-			fmt.Println(data[i].URL)
+	index.Add(data)
+	sort.Slice(data, func(i, j int) bool {
+		return data[i].ID < data[j].ID
+	})
+	idxArr := index.Search(flagVar)
+	sort.Ints(idxArr)
+	for _, v := range data {
+		key := binSearch(idxArr, v.ID)
+		if key != -1 {
+			fmt.Println(v.URL)
 		}
 	}
+}
+
+func binSearch(arr []int, need int) int {
+	lowKey := 0
+	highKey := len(arr) - 1
+	var index int
+	if arr[lowKey] > need || arr[highKey] < need {
+		index = -1
+	}
+	for lowKey <= highKey {
+		mid := (lowKey + highKey) / 2
+		if arr[mid] == need {
+			return mid
+		}
+		if arr[mid] < need {
+			lowKey = mid + 1
+			continue
+		}
+		if arr[mid] > need {
+			highKey = mid - 1
+		}
+	}
+	return index
 }
