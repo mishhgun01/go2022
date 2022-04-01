@@ -77,13 +77,15 @@ func (s *Service) Scan(url string, depth int) (data []crawler.Document, err erro
 	pages := make(map[string]string)
 
 	parse(url, url, depth, pages)
-
+	i := 0
 	for url, title := range pages {
 		item := crawler.Document{
+			ID:    i,
 			URL:   url,
 			Title: title,
 		}
 		data = append(data, item)
+		i++
 	}
 
 	return data, nil
