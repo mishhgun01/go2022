@@ -57,6 +57,6 @@ func main() {
 
 	b, err := cmd.InputInFile(file, data)
 	if b == 0 || err != nil {
-		log.Fatal("error with writing")
+		log.Fatal("error with writing: ", err)
 	}
 }
