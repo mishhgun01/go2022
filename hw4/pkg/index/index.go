@@ -2,7 +2,7 @@ package index
 
 // Обратный индекс отсканированных документов.
 
-import "go-dev-v3/GoSearch/pkg/crawler"
+import "go2022/hw4/pkg/crawler"
 
 // Interface определяет контракт службы индексирования документов.
 type Interface interface {
