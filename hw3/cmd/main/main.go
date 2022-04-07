@@ -1,10 +1,12 @@
-package hw3
+package main
 
 import (
 	"flag"
 	"fmt"
-	"go2022/pkg/crawler/spider"
-	"go2022/pkg/index/hash"
+	"go2022/hw3/cmd"
+	"go2022/hw3/pkg/crawler"
+	"go2022/hw3/pkg/crawler/spider"
+	"go2022/hw3/pkg/index/hash"
 	"log"
 	"sort"
 )
@@ -23,11 +25,14 @@ func main() {
 
 	index := hash.New()
 	scanner := spider.New()
-	data, err := scanner.Scan(urlGoDev, depthVar)
-	data, err = scanner.Scan(urlGolangOrg, depthVar)
+	var data []crawler.Document
+	scanDev, err := scanner.Scan(urlGoDev, depthVar)
 	if err != nil {
 		log.Fatal(err)
 	}
+	scanOrg, err := scanner.Scan(urlGolangOrg, depthVar)
+	data = append(data, scanOrg...)
+	data = append(data, scanDev...)
 	index.Add(data)
 	sort.Slice(data, func(i, j int) bool {
 		return data[i].ID < data[j].ID
@@ -35,32 +40,9 @@ func main() {
 	idxArr := index.Search(flagVar)
 	sort.Ints(idxArr)
 	for _, v := range data {
-		key := binSearch(idxArr, v.ID)
+		key := cmd.BinSearch(idxArr, v.ID) //бинарный поиск
 		if key != -1 {
 			fmt.Println(v.URL)
 		}
 	}
-}
-
-func binSearch(arr []int, need int) int {
-	lowKey := 0
-	highKey := len(arr) - 1
-	var index int
-	if arr[lowKey] > need || arr[highKey] < need {
-		index = -1
-	}
-	for lowKey <= highKey {
-		mid := (lowKey + highKey) / 2
-		if arr[mid] == need {
-			return mid
-		}
-		if arr[mid] < need {
-			lowKey = mid + 1
-			continue
-		}
-		if arr[mid] > need {
-			highKey = mid - 1
-		}
-	}
-	return index
 }
