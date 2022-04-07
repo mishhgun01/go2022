@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go2022/pkg/crawler/spider"
+	"go2022/hw5/pkg/crawler/spider"
 	"log"
 	"strings"
 )

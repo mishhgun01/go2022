@@ -1,7 +1,7 @@
 package hash
 
 import (
-	"go-dev-v3/GoSearch/pkg/crawler"
+	"go2022/hw5/pkg/crawler"
 	"strings"
 )
 
