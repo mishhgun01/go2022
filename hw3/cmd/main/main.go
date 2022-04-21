@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go2022/hw3/cmd"
+	"go2022/hw3/pkg/Search"
 	"go2022/hw3/pkg/crawler"
 	"go2022/hw3/pkg/crawler/spider"
 	"go2022/hw3/pkg/index/hash"
@@ -37,7 +37,7 @@ func main() {
 	idxArr := index.Search(flagVar) // slice of indexes where our keyword is
 	sort.Ints(idxArr)               //sorting
 	for i := range data {
-		key := cmd.BinSearch(idxArr, data[i].ID) // binary search in index slice
+		key := Search.BinSearch(idxArr, data[i].ID) // binary search in index slice
 		if key != -1 {
 			fmt.Println(data[i].URL)
 		}

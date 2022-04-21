@@ -1,4 +1,4 @@
-package cmd
+package Search
 
 //бинарный поиск
 func BinSearch(arr []int, need int) int {
