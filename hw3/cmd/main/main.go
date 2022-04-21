@@ -11,10 +11,9 @@ import (
 	"sort"
 )
 
-const (
-	urlGoDev     = "https://go.dev/"
-	urlGolangOrg = "https://golang.org/"
-)
+var sites = []string{
+	"https://go.dev/", "https://golang.org/",
+}
 
 func main() {
 	var flagVar string
@@ -26,23 +25,21 @@ func main() {
 	index := hash.New()
 	scanner := spider.New()
 	var data []crawler.Document
-	scanDev, err := scanner.Scan(urlGoDev, depthVar)
-	if err != nil {
-		log.Fatal(err)
+	for _, v := range sites {
+		fmt.Println("scanning ", v)
+		scan, err := scanner.Scan(v, depthVar)
+		data = append(data, scan...)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
-	scanOrg, err := scanner.Scan(urlGolangOrg, depthVar)
-	data = append(data, scanOrg...)
-	data = append(data, scanDev...)
-	index.Add(data)
-	sort.Slice(data, func(i, j int) bool {
-		return data[i].ID < data[j].ID
-	})
-	idxArr := index.Search(flagVar)
-	sort.Ints(idxArr)
-	for _, v := range data {
-		key := cmd.BinSearch(idxArr, v.ID) //бинарный поиск
+	index.Add(data)                 // Add indexes and keywords in index
+	idxArr := index.Search(flagVar) // slice of indexes where our keyword is
+	sort.Ints(idxArr)               //sorting
+	for i := range data {
+		key := cmd.BinSearch(idxArr, data[i].ID) // binary search in index slice
 		if key != -1 {
-			fmt.Println(v.URL)
+			fmt.Println(data[i].URL)
 		}
 	}
 }
