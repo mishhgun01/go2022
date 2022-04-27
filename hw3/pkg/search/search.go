@@ -1,14 +1,13 @@
-package Search
+package search
 
 //бинарный поиск
 func BinSearch(arr []int, need int) int {
 	lowKey := 0
 	highKey := len(arr) - 1
-	var index int
 	if arr[lowKey] > need || arr[highKey] < need {
-		index = -1
+		return -1
 	}
-	for lowKey <= highKey {
+	for lowKey < highKey {
 		mid := (lowKey + highKey) / 2
 		if arr[mid] == need {
 			return mid
@@ -20,6 +19,7 @@ func BinSearch(arr []int, need int) int {
 		if arr[mid] > need {
 			highKey = mid - 1
 		}
+
 	}
-	return index
+	return -1
 }

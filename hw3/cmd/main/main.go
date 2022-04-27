@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go2022/hw3/pkg/Search"
 	"go2022/hw3/pkg/crawler"
 	"go2022/hw3/pkg/crawler/spider"
 	"go2022/hw3/pkg/index/hash"
+	"go2022/hw3/pkg/search"
 	"log"
 	"sort"
 )
@@ -19,7 +19,7 @@ func main() {
 	var flagVar string
 	var depthVar int
 	flag.StringVar(&flagVar, "s", "", "string to scan")
-	flag.IntVar(&depthVar, "d", 2, "scanning depth")
+	flag.IntVar(&depthVar, "d", 3, "scanning depth")
 	flag.Parse()
 
 	index := hash.New()
@@ -28,16 +28,21 @@ func main() {
 	for _, v := range sites {
 		fmt.Println("scanning ", v)
 		scan, err := scanner.Scan(v, depthVar)
-		data = append(data, scan...)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
+			continue
 		}
+		data = append(data, scan...)
+
 	}
-	index.Add(data)                 // Add indexes and keywords in index
-	idxArr := index.Search(flagVar) // slice of indexes where our keyword is
-	sort.Ints(idxArr)               //sorting
+	// Add indexes and keywords in index
+	index.Add(data)
+	// slice of indexes where our keyword is
+	idxArr := index.Search(flagVar)
+	sort.Ints(idxArr)
 	for i := range data {
-		key := Search.BinSearch(idxArr, data[i].ID) // binary search in index slice
+		// binary search in index slice
+		key := search.BinSearch(idxArr, data[i].ID)
 		if key != -1 {
 			fmt.Println(data[i].URL)
 		}
