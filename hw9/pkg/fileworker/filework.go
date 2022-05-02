@@ -2,7 +2,7 @@ package fileworker
 
 import "io"
 
-//WriteFile записывает только строки
+// WriteFile записывает только строки
 func WriteFile(w io.Writer, data ...interface{}) {
 	for i := range data {
 		switch data[i].(type) {

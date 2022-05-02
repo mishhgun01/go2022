@@ -2,33 +2,33 @@ package maxage
 
 import "sort"
 
-//employee структура сотрудника
-type employee struct {
-	name string
-	age  int
+// Employee структура сотрудника
+type Employee struct {
+	Name string
+	Age  int
 }
 
-//customer - структура покупателя
-type customer struct {
-	name string
-	age  int
+// Customer - структура покупателя
+type Customer struct {
+	Name string
+	Age  int
 }
 
-//Методы получения возраста у покупателя и сотрудника
-func (e *employee) getAge() int {
-	return e.age
+// Методы получения возраста у покупателя и сотрудника
+func (e *Employee) getAge() int {
+	return e.Age
 }
 
-func (c *customer) getAge() int {
-	return c.age
+func (c *Customer) getAge() int {
+	return c.Age
 }
 
-//getter реализует контракт
+// getter реализует контракт
 type getter interface {
 	getAge() int
 }
 
-//MaxAge принимает на вход неопределённое количество данных любого типа и возвращает возраст старшего человека
+// MaxAge принимает на вход неопределённое количество данных любого типа и возвращает возраст старшего человека
 func MaxAge(p ...getter) int {
 	sort.Slice(p, func(i, j int) bool {
 		return p[i].getAge() > p[j].getAge()

@@ -1,7 +1,7 @@
 package eldest_person
 
 import (
-	"go2022/hw9/pkg/models"
+	"go2022/hw9/pkg/maxage"
 	"testing"
 )
 
@@ -14,30 +14,30 @@ func TestMaxAge(t *testing.T) {
 		{
 			name: "Among Employees",
 			people: []interface{}{
-				models.Employee{Age: 54, Name: "John"},
-				models.Employee{Age: 25, Name: "Mike"},
-				models.Employee{Age: 30, Name: "Keith"},
+				maxage.Employee{Age: 54, Name: "John"},
+				maxage.Employee{Age: 25, Name: "Mike"},
+				maxage.Employee{Age: 30, Name: "Keith"},
 			},
-			want: models.Employee{Age: 54, Name: "John"},
+			want: maxage.Employee{Age: 54, Name: "John"},
 		},
 		{
 			name: "Among Customers",
 			people: []interface{}{
-				models.Customer{Age: 54, Name: "John"},
-				models.Customer{Age: 25, Name: "Mike"},
-				models.Customer{Age: 67, Name: "Bob"},
+				maxage.Customer{Age: 54, Name: "John"},
+				maxage.Customer{Age: 25, Name: "Mike"},
+				maxage.Customer{Age: 67, Name: "Bob"},
 			},
-			want: models.Customer{Age: 67, Name: "Bob"},
+			want: maxage.Customer{Age: 67, Name: "Bob"},
 		},
 		{
 			name: "Among Everybody",
 			people: []interface{}{
-				models.Employee{Age: 56, Name: "Mike"},
-				models.Employee{Age: 30, Name: "Keith"},
-				models.Customer{Age: 54, Name: "John"},
-				models.Customer{Age: 25, Name: "Mike"},
+				maxage.Employee{Age: 56, Name: "Mike"},
+				maxage.Employee{Age: 30, Name: "Keith"},
+				maxage.Customer{Age: 54, Name: "John"},
+				maxage.Customer{Age: 25, Name: "Mike"},
 			},
-			want: models.Employee{Age: 56, Name: "Mike"},
+			want: maxage.Employee{Age: 56, Name: "Mike"},
 		},
 	}
 	for _, tt := range tests {

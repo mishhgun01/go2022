@@ -11,28 +11,28 @@ func TestMaxAge(t *testing.T) {
 		{
 			name: "Among Employees",
 			people: []getter{
-				&employee{age: 54, name: "John"},
-				&employee{age: 25, name: "Mike"},
-				&employee{age: 30, name: "Keith"},
+				&Employee{Age: 54, Name: "John"},
+				&Employee{Age: 25, Name: "Mike"},
+				&Employee{Age: 30, Name: "Keith"},
 			},
 			want: 54,
 		},
 		{
 			name: "Among Customers",
 			people: []getter{
-				&customer{age: 54, name: "John"},
-				&customer{age: 25, name: "Mike"},
-				&customer{age: 67, name: "Bob"},
+				&Customer{Age: 54, Name: "John"},
+				&Customer{Age: 25, Name: "Mike"},
+				&Customer{Age: 67, Name: "Bob"},
 			},
 			want: 67,
 		},
 		{
 			name: "Among Everybody",
 			people: []getter{
-				&employee{age: 56, name: "Mike"},
-				&employee{age: 30, name: "Keith"},
-				&customer{age: 54, name: "John"},
-				&customer{age: 25, name: "Mike"},
+				&Employee{Age: 56, Name: "Mike"},
+				&Employee{Age: 30, Name: "Keith"},
+				&Customer{Age: 54, Name: "John"},
+				&Customer{Age: 25, Name: "Mike"},
 			},
 			want: 56,
 		},
