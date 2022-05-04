@@ -12,7 +12,7 @@ func InputInFile(writer io.Writer, data []crawler.Document) (int, error) {
 	}
 	var err error
 	for _, v := range data {
-		bytesRead, err = writer.Write([]byte(v.URL + "\n"))
+		bytesRead, err = writer.Write([]byte(v.URL + " - " + v.Title + "\n"))
 		if err != nil {
 			return 0, err
 		}
@@ -21,12 +21,12 @@ func InputInFile(writer io.Writer, data []crawler.Document) (int, error) {
 }
 
 func ReadFromFile(reader io.Reader) ([]string, error) {
-	output := make([]byte, 64)
+	output := make([]byte, 1024)
 	var URLS []string
 	for {
 		_, err := reader.Read(output)
-		if err == io.EOF { // если конец файла
-			break // выходим из цикла
+		if err == io.EOF {
+			break
 		}
 		URLS = append(URLS, string(output))
 	}
