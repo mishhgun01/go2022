@@ -49,7 +49,7 @@ func main() {
 		}
 		return
 	}
-	defer file.Close()
+	file.Close()
 	readFromFile, err := fileworker.ReadFromFile(file)
 	if err != nil {
 		log.Print(err.Error())
