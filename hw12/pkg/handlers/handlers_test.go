@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"fmt"
@@ -12,19 +12,19 @@ import (
 	"testing"
 )
 
-var documents docs
+var documents Docs
 var r *mux.Router
 
 func TestMain(m *testing.M) {
 	r = mux.NewRouter()
-	r.HandleFunc("/docs", documents.docsHandler).Methods(http.MethodGet)
-	r.HandleFunc("/index/{id}", documents.indexHandler).Methods(http.MethodGet)
-	r.HandleFunc("/search/{query}", documents.searchHandler).Methods(http.MethodGet)
+	r.HandleFunc("/docs", documents.DocsHandler).Methods(http.MethodGet)
+	r.HandleFunc("/index/{id}", documents.IndexHandler).Methods(http.MethodGet)
+	r.HandleFunc("/search/{query}", documents.SearchHandler).Methods(http.MethodGet)
 	os.Exit(m.Run())
 }
 
-func Test_crawlerDocs_docsHandler(t *testing.T) {
-	documents = docs{docs: []crawler.Document{}}
+func Test_DocsHandler(t *testing.T) {
+	documents = Docs{Docs: []crawler.Document{}}
 	req := httptest.NewRequest(http.MethodGet, "/docs", nil)
 	req.Header.Add("content-type", "plain/text")
 	rr := httptest.NewRecorder()
@@ -34,7 +34,7 @@ func Test_crawlerDocs_docsHandler(t *testing.T) {
 	}
 
 	var ul string
-	documents.docs = []crawler.Document{
+	documents.Docs = []crawler.Document{
 		{
 			ID:    0,
 			URL:   "https://go.dev/help",
@@ -61,7 +61,7 @@ func Test_crawlerDocs_docsHandler(t *testing.T) {
 	resp := rr.Result()
 	body, _ := io.ReadAll(resp.Body)
 	got := string(body)
-	for _, doc := range documents.docs {
+	for _, doc := range documents.Docs {
 		ul += "<p>" + fmt.Sprint(doc.ID, ": ") + "<a href=\"/index/" + fmt.Sprint(doc.ID) + "\">" + doc.Title + "</a></p>"
 	}
 	want := "<html><body><div>" + ul + "</div></body></html>"
@@ -70,8 +70,8 @@ func Test_crawlerDocs_docsHandler(t *testing.T) {
 	}
 }
 
-func Test_crawlerDocs_indexHandler(t *testing.T) {
-	documents = docs{docs: []crawler.Document{}}
+func Test_indexHandler(t *testing.T) {
+	documents = Docs{Docs: []crawler.Document{}}
 	id := 2
 	req := httptest.NewRequest(http.MethodGet, "/index/"+strconv.Itoa(id), nil)
 	req.Header.Add("content-type", "plain/text")
@@ -81,7 +81,7 @@ func Test_crawlerDocs_indexHandler(t *testing.T) {
 		t.Errorf("incorrect code: get %d, want %d", rr.Code, http.StatusNoContent)
 	}
 
-	documents.docs = []crawler.Document{
+	documents.Docs = []crawler.Document{
 		{
 			ID:    0,
 			URL:   "https://go.dev/help",
@@ -108,7 +108,7 @@ func Test_crawlerDocs_indexHandler(t *testing.T) {
 	resp := rr.Result()
 	body, _ := io.ReadAll(resp.Body)
 	got := string(body)
-	doc := documents.docs[id]
+	doc := documents.Docs[id]
 	ul := "<p>" + fmt.Sprint(doc.ID, ": ") + "<a href=\"" + doc.URL + "\">" + doc.Title + "</a></p>"
 	want := "<html><body><div>" + ul + "</div></body></html>"
 	if got != want {
@@ -116,8 +116,8 @@ func Test_crawlerDocs_indexHandler(t *testing.T) {
 	}
 }
 
-func Test_crawlerDocs_searchHandler(t *testing.T) {
-	documents = docs{docs: []crawler.Document{}}
+func Test_searchHandler(t *testing.T) {
+	documents = Docs{Docs: []crawler.Document{}}
 	req := httptest.NewRequest(http.MethodGet, "/search/help", nil)
 	req.Header.Add("content-type", "plain/text")
 	rr := httptest.NewRecorder()
@@ -127,7 +127,7 @@ func Test_crawlerDocs_searchHandler(t *testing.T) {
 	}
 
 	var ul string
-	documents.docs = []crawler.Document{
+	documents.Docs = []crawler.Document{
 		{
 			ID:    0,
 			URL:   "https://go.dev/help",
@@ -154,7 +154,7 @@ func Test_crawlerDocs_searchHandler(t *testing.T) {
 	resp := rr.Result()
 	body, _ := io.ReadAll(resp.Body)
 	got := string(body)
-	for _, doc := range documents.docs {
+	for _, doc := range documents.Docs {
 		if doc.ID == 2 {
 			continue
 		}

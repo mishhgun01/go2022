@@ -1,4 +1,4 @@
-package router
+package webapp
 
 import (
 	"github.com/gorilla/mux"
