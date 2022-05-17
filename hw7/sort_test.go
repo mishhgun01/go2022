@@ -7,34 +7,12 @@ import (
 	"time"
 )
 
-//отличия тестовых примеров :
-// 1 - подаём на вход обычный слайс разных чисел
-// 2 - слайс с повторяющимися элементами
-// 3 - слайс с повторяющимися элементами и нестандартной записью числа
 func Test_SortInts(t *testing.T) {
-	array := []int{2, 42, 1, 46, 7, 0, 9}
+
+	array := []int{3, 03, 0, 1, 1, 4, 3}
 	sort.Ints(array)
 	got := array
-	want := []int{0, 1, 2, 7, 9, 42, 46}
-	for i, v := range want {
-		if got[i] != v {
-			t.Fatalf("Test #1 - got: %+v, want: %+v", got[i], want)
-		}
-	}
-	array = []int{2, 2, 1, 1, 46, 7, 0, 9}
-	sort.Ints(array)
-	got = array
-	want = []int{0, 1, 1, 2, 2, 7, 9, 46}
-	for i, v := range want {
-		if got[i] != v {
-			t.Fatalf("Test #2 - got: %+v, want: %+v", got[i], want)
-		}
-	}
-
-	array = []int{3, 03, 0, 1, 1, 4, 3}
-	sort.Ints(array)
-	got = array
-	want = []int{0, 1, 1, 3, 3, 3, 4}
+	want := []int{0, 1, 1, 3, 3, 3, 4}
 	for i, v := range want {
 		if got[i] != v {
 			t.Fatalf("Test #3 - got: %+v, want: %+v", got[i], want)
@@ -49,10 +27,14 @@ func Test_SortStrings(t *testing.T) {
 		s    []string
 		want []string
 	}{
-		{"test1", []string{"a", "c", "b"}, []string{"a", "b", "c"}},                                   // Проверяем сортировкуи букв
-		{"test2", []string{"London", "london", "Aberdeen"}, []string{"Aberdeen", "London", "london"}}, // Проверяем как сортируются заглавные
-		{"test3", []string{"aa", "a", ""}, []string{"", "a", "aa"}},                                   // как сортируется слайс с пустой строкой
-		{"test4", []string{"3", "1", "2"}, []string{"1", "2", "3"}},                                   //как сортируются цифры в строковом виде
+		// Проверяем сортировку букв.
+		{name: "Letters", s: []string{"a", "c", "b"}, want: []string{"a", "b", "c"}},
+		// Проверяем как сортируются заглавные.
+		{name: "Big letters", s: []string{"London", "aberdeen", "Aberdeen"}, want: []string{"Aberdeen", "London", "aberdeen"}},
+		// Как сортируется слайс с пустой строкой.
+		{name: "Empty string and repeating elements with big and small letters", s: []string{"A", "a", ""}, want: []string{"", "A", "a"}},
+		// Как сортируется nil.
+		{name: "nil slices", s: nil, want: nil},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
