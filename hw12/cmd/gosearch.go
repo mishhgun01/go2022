@@ -12,8 +12,8 @@ var urls = []string{"https://go.dev", "https://golang.org"}
 
 func main() {
 	docs := scan()
-	s := webapp.New()
-	s.Handle(docs)
+	s := webapp.New(docs)
+	s.Handle()
 	s.ListenAndServe()
 }
 
