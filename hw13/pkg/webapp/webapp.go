@@ -8,22 +8,20 @@ import (
 
 const addr = "0.0.0.0:8080"
 
-type Server struct {
-	r mux.Router
-	d Docs
+func New(router *mux.Router, d Docs) *API {
+	s := API{r: router, d: d}
+	return &s
 }
 
-func New(d Docs) *Server {
-	s := &Server{r: *(mux.NewRouter()), d: d}
-	return s
+func (api *API) Handle() {
+	api.r.HandleFunc("/api/v1/docs", api.docs).Methods(http.MethodGet)
+	api.r.HandleFunc("/api/v1/index/{query}", api.index).Methods(http.MethodGet)
+	api.r.HandleFunc("/api/v1/newDoc", api.newDocument).Methods(http.MethodPost, http.MethodOptions)
+	api.r.HandleFunc("/api/v1/deleteDoc/{id}", api.deleteDocument).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
+	api.r.HandleFunc("/api/v1/updateDoc/{id}", api.updateDocument).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
 }
 
-func (s *Server) Handle() {
-	s.r.HandleFunc("/docs", s.d.docsHandler).Methods(http.MethodGet)
-	s.r.HandleFunc("/index/{query}", s.d.indexHandler).Methods(http.MethodGet)
-}
-
-func (s *Server) ListenAndServe() {
+func (api *API) ListenAndServe() {
 	log.Print("Listen on tcp://" + addr)
-	http.ListenAndServe(addr, &s.r)
+	http.ListenAndServe(addr, api.r)
 }
