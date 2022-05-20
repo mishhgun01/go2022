@@ -17,8 +17,8 @@ func (api *API) Handle() {
 	api.r.HandleFunc("/api/v1/docs", api.docs).Methods(http.MethodGet)
 	api.r.HandleFunc("/api/v1/index/{query}", api.index).Methods(http.MethodGet)
 	api.r.HandleFunc("/api/v1/newDoc", api.newDocument).Methods(http.MethodPost, http.MethodOptions)
-	api.r.HandleFunc("/api/v1/deleteDoc/{id}", api.deleteDocument).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
-	api.r.HandleFunc("/api/v1/updateDoc/{id}", api.updateDocument).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
+	api.r.HandleFunc("/api/v1/deleteDoc/{id}", api.deleteDocument).Methods(http.MethodPost, http.MethodOptions)
+	api.r.HandleFunc("/api/v1/updateDoc/{id}", api.updateDocument).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (api *API) ListenAndServe() {
