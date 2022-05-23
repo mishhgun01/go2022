@@ -2,7 +2,7 @@ package models
 
 // Интерфейс взаимодействия с БД.
 type Controller interface {
-	Films(id int) ([]Film, error)
+	Films(id []int) ([]Film, error)
 	DeleteFilm(item Film) error
 	UpdateFilm(item Film) error
 	NewFilm(item Film) (int, error)

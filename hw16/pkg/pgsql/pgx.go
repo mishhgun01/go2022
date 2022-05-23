@@ -11,8 +11,8 @@ type Storage struct {
 	pool *pgxpool.Pool
 }
 
-// Films вовзараещает фильм с заданным id.
-func (s *Storage) Films(id int) ([]models.Film, error) {
+// Films возвращает фильм с заданным id.
+func (s *Storage) Films(ids []int) ([]models.Film, error) {
 	var data []models.Film
 	rows, err := s.pool.Query(context.Background(), `
 	SELECT 
@@ -23,8 +23,9 @@ func (s *Storage) Films(id int) ([]models.Film, error) {
 		studio_id,
 		rating_id
 	FROM films
-	WHERE id==$1 OR $1=0
-	ORDER BY id`, id)
+	WHERE (id=ANY($1) OR array_length($1) is NULL)
+	ORDER BY id`,
+		intToInt32Array(ids))
 	if err != nil {
 		return data, err
 	}
@@ -102,4 +103,13 @@ func (s *Storage) NewFilm(item models.Film) (int, error) {
 		return -1, err
 	}
 	return id, nil
+}
+
+// Функция перевода слайса int в слайс int32 для корректной работы SQL скрипта.
+func intToInt32Array(in []int) []int32 {
+	var out []int32
+	for _, val := range in {
+		out = append(out, int32(val))
+	}
+	return out
 }
