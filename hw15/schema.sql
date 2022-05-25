@@ -7,6 +7,13 @@ DROP TABLE IF EXISTS studios;
 DROP TABLE IF EXISTS films_and_actors;
 DROP TABLE IF EXISTS films_and_directors;
 
+-- Студии.
+CREATE TABLE studios(
+    id SERIAL PRIMARY KEY ,
+    title TEXT NOT NULL DEFAULT ''  UNIQUE
+);
+
+
 -- Актёры.
 CREATE TABLE actors(
     id SERIAL PRIMARY KEY,
@@ -40,12 +47,6 @@ CREATE TABLE films(
     studio_id BIGINT NOT NULL REFERENCES studios(id),
     rating_id BIGINT NOT NULL REFERENCES ratings(id),
     UNIQUE (title, year_of_release)
-);
-
--- Студии.
-CREATE TABLE studios(
-    id SERIAL PRIMARY KEY ,
-    title TEXT NOT NULL DEFAULT ''  UNIQUE
 );
 
 -- Связь фильмов и актёров.
