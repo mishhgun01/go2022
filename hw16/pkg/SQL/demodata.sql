@@ -1,4 +1,4 @@
-
+-- Демонстрационные данные - фильмы Интерстеллар и Начало
 -- Режиссёр.
 INSERT INTO directors(id,name, surname, year_of_birth) VALUES (0,'Christopher', 'Nolan', 1970);
 
@@ -12,18 +12,20 @@ INSERT INTO actors(id, name, surname, year_of_birth) VALUES (0,'Leonardo', 'DiCa
                                                             (6, 'Matthew', 'McConaughey', 1969),
                                                             (7, 'Anne', 'Hathaway', 1982),
                                                             (8, 'Michael', 'Caine', 1933);
+ALTER SEQUENCE actors_id_seq RESTART WITH 100;
 
 -- Студии.
 INSERT INTO studios(id, title) VALUES (0,'Legendary Pictures'),
                                       (1,'Warner Bros. Pictures');
-
+ALTER SEQUENCE studios_id_seq RESTART WITH 100;
 -- Возрастные рейтинги.
-INSERT INTO rating(id, title) VALUES (0,'PG-13');
+INSERT INTO ratings(id, title) VALUES (0,'PG-13');
+ALTER SEQUENCE ratings_id_seq RESTART WITH 100;
 
 -- Фильмы.
 INSERT INTO films(id, title, year_of_release, box_office, studio_id, rating_id) VALUES
                                                                                     (0, 'Inception', 2010, 160000000, 0, 0),
-                                                                                    (1, 'Interstellar', 2014, 165000000,1,1);
+                                                                                    (1, 'Interstellar', 2014, 165000000,1,0);
 -- Начало и актёры.
 INSERT INTO films_and_actors(film_id,actor_id) VALUES
                                                    (0,0),

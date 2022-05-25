@@ -1,11 +1,17 @@
 -- Удалить таблицы, если они существуют.
-DROP TABLE IF EXISTS actors;
-DROP TABLE IF EXISTS directors;
-DROP TABLE IF EXISTS ratings;
-DROP TABLE IF EXISTS films;
-DROP TABLE IF EXISTS studios;
-DROP TABLE IF EXISTS films_and_actors;
+
 DROP TABLE IF EXISTS films_and_directors;
+DROP TABLE IF EXISTS films_and_actors;
+DROP TABLE IF EXISTS films;
+DROP TABLE IF EXISTS ratings;
+DROP TABLE IF EXISTS directors;
+DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS studios;
+-- Студии.
+CREATE TABLE studios(
+                        id SERIAL PRIMARY KEY ,
+                        title TEXT NOT NULL DEFAULT ''  UNIQUE
+);
 
 -- Актёры.
 CREATE TABLE actors(
@@ -40,12 +46,6 @@ CREATE TABLE films(
                       studio_id BIGINT NOT NULL REFERENCES studios(id),
                       rating_id BIGINT NOT NULL REFERENCES ratings(id),
                       UNIQUE (title, year_of_release)
-);
-
--- Студии.
-CREATE TABLE studios(
-                        id SERIAL PRIMARY KEY ,
-                        title TEXT NOT NULL DEFAULT ''  UNIQUE
 );
 
 -- Связь фильмов и актёров.
