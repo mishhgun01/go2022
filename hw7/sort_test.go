@@ -2,20 +2,19 @@ package hw7
 
 import (
 	"math/rand"
+	"reflect"
 	"sort"
 	"testing"
 	"time"
 )
 
 func Test_SortInts(t *testing.T) {
-
-	array := []int{3, 03, 0, 1, 1, 4, 3}
-	sort.Ints(array)
-	got := array
+	got := []int{3, 03, 0, 1, 1, 4, 3}
+	sort.Ints(got)
 	want := []int{0, 1, 1, 3, 3, 3, 4}
 	for i, v := range want {
-		if got[i] != v {
-			t.Fatalf("Test #3 - got: %+v, want: %+v", got[i], want)
+		if !reflect.DeepEqual(got[i], v) {
+			t.Fatalf("Test #3 - got: %+v, want: %+v", got[i], v)
 		}
 	}
 }
@@ -42,7 +41,7 @@ func Test_SortStrings(t *testing.T) {
 			sort.Strings(s)
 			got := s
 			for i, v := range got {
-				if v != tt.want[i] {
+				if reflect.DeepEqual(tt.want[i], v) {
 					t.Errorf("%v: got = %v, want=%v", tt.name, v, tt.want[i])
 				}
 			}
