@@ -34,6 +34,6 @@ func main() {
 		log.Fatal(err)
 	}
 	for _, item := range resp {
-		fmt.Println(item.String())
+		fmt.Println(item.ID, ":", item.Text)
 	}
 }
