@@ -9,8 +9,8 @@ import (
 const addr = "0.0.0.0:8080"
 
 func New(router *mux.Router, d Docs) *API {
-	s := API{r: router, d: d}
-	return &s
+	api := API{r: router, d: d}
+	return &api
 }
 
 func (api *API) Handle() {

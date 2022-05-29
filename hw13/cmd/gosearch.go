@@ -14,9 +14,9 @@ var urls = []string{"https://go.dev", "https://golang.org"}
 func main() {
 	r := mux.NewRouter()
 	docs := scan()
-	a := webapp.New(r, docs)
-	a.Handle()
-	a.ListenAndServe()
+	api := webapp.New(r, docs)
+	api.Handle()
+	api.ListenAndServe()
 }
 
 func scan() webapp.Docs {
