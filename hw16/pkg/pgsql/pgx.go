@@ -36,7 +36,7 @@ func (s *Storage) Films(ids []int) ([]pkg.Film, error) {
 		err = rows.Scan(
 			&item.ID,
 			&item.Title,
-			item.Year,
+			&item.Year,
 			&item.BoxOffice,
 			&item.StudioID,
 			&item.RateID,
