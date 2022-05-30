@@ -24,7 +24,10 @@ func New(links []Link) *DB {
 
 func (db *DB) NewLink(url string) string {
 	db.mu.Lock()
-	link := Link{Link: url, Short: longToShort()}
+	link := Link{
+		Link:  url,
+		Short: longToShort(),
+	}
 	db.links = append(db.links, link)
 	db.mu.Unlock()
 	return link.Short
