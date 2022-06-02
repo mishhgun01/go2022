@@ -19,8 +19,8 @@ func New(s queue.Storage) *API {
 }
 
 func (api *API) Handle() {
-	api.r.HandleFunc("/newLink/{query}", api.NewLink).Methods(http.MethodPost, http.MethodOptions)
-	api.r.HandleFunc("/link/{query}", api.Link).Methods(http.MethodGet, http.MethodOptions)
+	api.r.HandleFunc("/api/v1/newLink/{query}", api.NewLink).Methods(http.MethodPost, http.MethodOptions)
+	api.r.HandleFunc("/api/v1//link/{query}", api.Link).Methods(http.MethodGet, http.MethodOptions)
 }
 
 func (api *API) ListenAndServe() {

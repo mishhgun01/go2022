@@ -19,7 +19,10 @@ type DB struct {
 }
 
 func New(links []Link) *DB {
-	return &DB{mu: sync.Mutex{}, links: links}
+	return &DB{
+		mu:    sync.Mutex{},
+		links: links,
+	}
 }
 
 func (db *DB) NewLink(url string) string {
