@@ -1,9 +1,9 @@
 package pgsql
 
 import (
+	"context"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"go2022/hw16/pkg/models"
-	"golang.org/x/net/context"
 )
 
 // Структура БД Postgres.
