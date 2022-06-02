@@ -12,8 +12,8 @@ type Storage struct {
 }
 
 // Films возвращает фильм с заданным id.
-func (s *Storage) Films(ids []int) ([]pkg.Film, error) {
-	var data []pkg.Film
+func (s *Storage) Films(id int) ([]models.Film, error) {
+	var data []models.Film
 	rows, err := s.pool.Query(context.Background(), `
 	SELECT 
 		id,
@@ -23,16 +23,18 @@ func (s *Storage) Films(ids []int) ([]pkg.Film, error) {
 		studio_id,
 		rating_id
 	FROM films
-	WHERE (studio_id=ANY($1) OR array_length($1) is NULL)
+	WHERE 
+		(studio_id = $1 OR $1 = 0)
 	ORDER BY id`,
-		intToInt32Array(ids))
+		id,
+	)
 	if err != nil {
 		return data, err
 	}
 
 	defer rows.Close()
 	for rows.Next() {
-		var item pkg.Film
+		var item models.Film
 		err = rows.Scan(
 			&item.ID,
 			&item.Title,
@@ -50,7 +52,7 @@ func (s *Storage) Films(ids []int) ([]pkg.Film, error) {
 }
 
 // DeleteFilm удаляет фильм.
-func (s *Storage) DeleteFilm(item pkg.Film) error {
+func (s *Storage) DeleteFilm(item models.Film) error {
 	_, err := s.pool.Exec(context.Background(), `
 	DELETE FROM films WHERE id=$1`, item.ID)
 	if err != nil {
@@ -60,7 +62,7 @@ func (s *Storage) DeleteFilm(item pkg.Film) error {
 }
 
 // UpdateFilm обновляет информацию о фильме.
-func (s *Storage) UpdateFilm(item pkg.Film) error {
+func (s *Storage) UpdateFilm(item models.Film) error {
 	_, err := s.pool.Exec(context.Background(), `
 	UPDATE films
 		SET title = $2,
@@ -82,7 +84,7 @@ func (s *Storage) UpdateFilm(item pkg.Film) error {
 }
 
 // NewFilm добавляет фильм в бд.
-func (s *Storage) NewFilm(item pkg.Film) (int, error) {
+func (s *Storage) NewFilm(item models.Film) (int, error) {
 	var id int
 
 	err := s.pool.QueryRow(context.Background(), `
@@ -103,13 +105,4 @@ func (s *Storage) NewFilm(item pkg.Film) (int, error) {
 		return -1, err
 	}
 	return id, nil
-}
-
-// Функция перевода слайса int в слайс int32 для корректной работы SQL скрипта.
-func intToInt32Array(in []int) []int32 {
-	var out []int32
-	for _, val := range in {
-		out = append(out, int32(val))
-	}
-	return out
 }

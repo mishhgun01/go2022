@@ -1,4 +1,4 @@
-package pkg
+package models
 
 // Интерфейс взаимодействия с БД.
 type Storage interface {
