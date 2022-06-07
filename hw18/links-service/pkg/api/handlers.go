@@ -13,7 +13,7 @@ func (api *API) Link(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
-	link := api.s.Link(short)
+	link := api.db.Link(short)
 	if len(link) == 0 {
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -29,7 +29,7 @@ func (api *API) NewLink(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
-	short := api.s.NewLink(link)
+	short := api.db.NewLink(link)
 	if len(short) == 0 {
 		w.WriteHeader(http.StatusNoContent)
 		return
