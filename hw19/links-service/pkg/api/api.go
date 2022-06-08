@@ -10,9 +10,9 @@ import (
 )
 
 type API struct {
-	db       *links.DB
-	r        *mux.Router
-	producer *kafka.Writer
+	db *links.DB
+	r  *mux.Router
+	w  *kafka.Writer
 }
 
 type Options struct {
@@ -22,14 +22,14 @@ type Options struct {
 }
 
 func New(op Options) (*API, error) {
-	kfk, err := NewKfk(op.brokers, op.topic)
+	kfk, err := newProducer(op.brokers, op.topic)
 	if err != nil {
 		return nil, err
 	}
 	return &API{
-		db:       op.db,
-		r:        mux.NewRouter(),
-		producer: kfk,
+		db: op.db,
+		r:  mux.NewRouter(),
+		w:  kfk,
 	}, nil
 }
 
@@ -43,7 +43,7 @@ func (api *API) ListenAndServe(addr string) {
 	http.ListenAndServe(addr, api.r)
 }
 
-func NewKfk(brokers []string, topic string) (*kafka.Writer, error) {
+func newProducer(brokers []string, topic string) (*kafka.Writer, error) {
 	if len(brokers) == 0 || brokers[0] == "" || topic == "" {
 		return nil, errors.New("не указаны параметры подключения к Kafka")
 	}

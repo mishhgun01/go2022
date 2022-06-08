@@ -41,7 +41,7 @@ func (api *API) NewLink(w http.ResponseWriter, r *http.Request) {
 	msg := kafka.Message{
 		Value: []byte(link),
 	}
-	err := api.producer.WriteMessages(context.Background(), msg)
+	err := api.w.WriteMessages(context.Background(), msg)
 	if err != nil {
 		log.Println(err.Error())
 	}
