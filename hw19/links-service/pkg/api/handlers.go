@@ -1,8 +1,11 @@
 package api
 
 import (
+	"context"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/segmentio/kafka-go"
+	"log"
 	"net/http"
 )
 
@@ -35,5 +38,12 @@ func (api *API) NewLink(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ul := "<p><a href=\"/index/\">" + short + "</a></p>"
+	msg := kafka.Message{
+		Value: []byte(link),
+	}
+	err := api.producer.WriteMessages(context.Background(), msg)
+	if err != nil {
+		log.Println(err.Error())
+	}
 	fmt.Fprintf(w, "<html><body><div>%v</div></body></html>", ul)
 }
