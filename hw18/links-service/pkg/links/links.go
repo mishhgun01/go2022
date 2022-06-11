@@ -1,9 +1,8 @@
 package links
 
 import (
-	"math/rand"
+	"strings"
 	"sync"
-	"time"
 )
 
 const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNMOPQRTTUVWXYZ"
@@ -29,7 +28,7 @@ func (db *DB) NewLink(url string) string {
 	db.mu.Lock()
 	link := Link{
 		Link:  url,
-		Short: longToShort(),
+		Short: longToShort(url),
 	}
 	db.links = append(db.links, link)
 	db.mu.Unlock()
@@ -47,11 +46,8 @@ func (db *DB) Link(link string) string {
 }
 
 // Формирование короткой ссылки путём формирования случайного слова из 5 символов.
-func longToShort() string {
-	rand.Seed(time.Now().UnixNano())
-	short := make([]byte, 5)
-	for i := range short {
-		short[i] = alphabet[rand.Intn(len(alphabet))]
-	}
-	return string(short)
+func longToShort(long string) string {
+	s := strings.Split(long, "/")
+	short := s[0] + "//" + s[2] + "/"
+	return short
 }
