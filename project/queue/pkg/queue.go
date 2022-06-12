@@ -14,12 +14,12 @@ type Options struct {
 }
 
 type Producer struct {
-	w    *kafka.Writer
+	W    *kafka.Writer
 	Opts Options
 }
 
 type Consumer struct {
-	r    *kafka.Reader
+	R    *kafka.Reader
 	Opts Options
 }
 
@@ -43,7 +43,7 @@ func NewProducer(o Options) (*Producer, error) {
 	}
 	return &Producer{
 		Opts: o,
-		w: &kafka.Writer{
+		W: &kafka.Writer{
 			Topic:    o.topic,
 			Addr:     kafka.TCP(o.brokers[0]),
 			Balancer: &kafka.LeastBytes{},
@@ -57,7 +57,7 @@ func NewConsumer(o Options) (*Consumer, error) {
 	}
 	return &Consumer{
 		Opts: o,
-		r: kafka.NewReader(
+		R: kafka.NewReader(
 			kafka.ReaderConfig{
 				Brokers:  o.brokers,
 				Topic:    o.topic,
