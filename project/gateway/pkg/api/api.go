@@ -3,18 +3,20 @@ package api
 import (
 	"github.com/gorilla/mux"
 	"go2022/project/cache/pkg/cache"
-	"go2022/project/storage"
+	"go2022/project/queue/pkg"
+	"go2022/project/storage/mongo"
 	"log"
 	"net/http"
 )
 
 type API struct {
 	r     *mux.Router
-	db    *storage.Storage
+	db    *mongo.DB
 	cache *cache.Storage
+	w     *pkg.Producer
 }
 
-func New(db *storage.Storage) *API {
+func New(db *mongo.DB) *API {
 	return &API{
 		r:  mux.NewRouter(),
 		db: db,

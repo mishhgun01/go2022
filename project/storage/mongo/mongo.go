@@ -43,7 +43,13 @@ func (db *DB) NewLink(link models.Link) (string, error) {
 	return link.Short, nil
 }
 
-func (db *DB) GetLink(link models.Link) (models.Link, error) {
+func (db *DB) GetLink(short string) (string, error) {
+	var l models.Link
 	collection := db.c.Database(db.name).Collection(db.collection)
-	filter := bson.D{}
+	filter := bson.D{{"key", short}}
+	err := collection.FindOne(context.Background(), filter).Decode(&l)
+	if err != nil {
+		return "", err
+	}
+	return l.Long, err
 }
