@@ -5,8 +5,6 @@ import (
 	"sync"
 )
 
-const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLNMOPQRTTUVWXYZ"
-
 type Link struct {
 	Link  string
 	Short string
