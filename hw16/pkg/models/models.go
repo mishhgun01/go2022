@@ -9,3 +9,7 @@ type Film struct {
 	StudioID  int
 	RateID    int
 }
+
+type Request struct {
+	ID int
+}

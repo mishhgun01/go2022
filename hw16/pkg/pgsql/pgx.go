@@ -12,7 +12,7 @@ type Storage struct {
 }
 
 // Films возвращает фильм с заданным id.
-func (s *Storage) Films(id int) ([]models.Film, error) {
+func (s *Storage) Films(req models.Request) ([]models.Film, error) {
 	var data []models.Film
 	rows, err := s.pool.Query(context.Background(), `
 	SELECT 
@@ -26,7 +26,7 @@ func (s *Storage) Films(id int) ([]models.Film, error) {
 	WHERE 
 		(studio_id = $1 OR $1 = 0)
 	ORDER BY id`,
-		id,
+		req.ID,
 	)
 	if err != nil {
 		return data, err
@@ -52,9 +52,9 @@ func (s *Storage) Films(id int) ([]models.Film, error) {
 }
 
 // DeleteFilm удаляет фильм.
-func (s *Storage) DeleteFilm(item models.Film) error {
+func (s *Storage) DeleteFilm(req models.Request) error {
 	_, err := s.pool.Exec(context.Background(), `
-	DELETE FROM films WHERE id=$1`, item.ID)
+	DELETE FROM films WHERE id=$1`, req.ID)
 	if err != nil {
 		return err
 	}
@@ -70,13 +70,14 @@ func (s *Storage) UpdateFilm(item models.Film) error {
 			box_office = $4,
 			studio_id=$5,
 			rating_id=$6
-		WHERE id=$1`,
+	WHERE id=$1`,
 		item.ID,
 		item.Title,
 		item.Year,
 		item.BoxOffice,
 		item.StudioID,
-		item.RateID)
+		item.RateID,
+	)
 	if err != nil {
 		return err
 	}
@@ -99,7 +100,8 @@ func (s *Storage) NewFilm(item models.Film) (int, error) {
 		item.Year,
 		item.BoxOffice,
 		item.StudioID,
-		item.RateID).Scan(&id)
+		item.RateID,
+	).Scan(&id)
 
 	if err != nil {
 		return -1, err
