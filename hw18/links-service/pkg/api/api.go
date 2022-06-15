@@ -17,7 +17,7 @@ func New(db *links.DB) *API {
 }
 
 func (api *API) Handle() {
-	api.r.HandleFunc("/newLink/{query}", api.NewLink).Methods(http.MethodPost, http.MethodOptions)
+	api.r.HandleFunc("/newLink", api.NewLink).Methods(http.MethodPost, http.MethodOptions)
 	api.r.HandleFunc("/link/{query}", api.Link).Methods(http.MethodGet, http.MethodOptions)
 }
 
