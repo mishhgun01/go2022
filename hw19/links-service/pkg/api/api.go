@@ -37,9 +37,10 @@ func (api *API) Handle() {
 	api.r.HandleFunc("/link/{query}", api.Link).Methods(http.MethodGet, http.MethodOptions)
 }
 
-func (api *API) ListenAndServe(addr string) {
+func (api *API) ListenAndServe(addr string) error {
 	log.Print("Listen on tcp://" + addr)
-	http.ListenAndServe(addr, api.r)
+	err := http.ListenAndServe(addr, api.r)
+	return err
 }
 
 func newProducer(brokers []string, topic string) (*kafka.Writer, error) {

@@ -27,5 +27,8 @@ func main() {
 	}
 
 	apiLinks.Handle()
-	apiLinks.ListenAndServe(address)
+	err = apiLinks.ListenAndServe(address)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
