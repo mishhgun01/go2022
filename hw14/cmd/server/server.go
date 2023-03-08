@@ -27,6 +27,8 @@ func (s *Server) Send(req []message.Message, _ *string) error {
 }
 
 func (s *Server) Messages(_ []message.Message, resp *[]message.Message) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	*resp = s.messages
 	return nil
 }

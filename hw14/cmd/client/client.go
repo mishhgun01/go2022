@@ -19,15 +19,18 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	var req []message.Message
 	for _, text := range messages {
 		item := message.Message{Text: text}
 		req = append(req, item)
 	}
+
 	err = client.Call("Server.Send", req, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	var resp []message.Message
 	err = client.Call("Server.Messages", new([]message.Message), &resp)
 	if err != nil {
