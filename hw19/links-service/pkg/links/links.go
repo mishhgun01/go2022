@@ -37,6 +37,7 @@ func New(links []Link) *DB {
 
 func (db *DB) NewLink(url string) string {
 	db.mu.Lock()
+	defer db.mu.Unlock()
 	short := ""
 	for {
 		short = randomString(shortUrlLen)
@@ -56,7 +57,6 @@ func (db *DB) NewLink(url string) string {
 		Short: fmt.Sprintf("%s/%s", link, short),
 	}
 	db.links = append(db.links, link)
-	db.mu.Unlock()
 	return link.Short
 }
 

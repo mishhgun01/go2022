@@ -35,6 +35,7 @@ func New(op ConsumerOptions) (*Analytics, error) {
 
 func (a *Analytics) Update() int {
 	a.mu.Lock()
+	defer a.mu.Unlock()
 	msg, err := a.r.FetchMessage(context.Background())
 	if err != nil {
 		log.Println(err)
@@ -43,7 +44,6 @@ func (a *Analytics) Update() int {
 	a.Count += 1
 	a.Lengths = append(a.Lengths, len(link))
 	a.MiddleLen = sum(a.Lengths) / a.Count
-	a.mu.Unlock()
 	return a.Count
 }
 
