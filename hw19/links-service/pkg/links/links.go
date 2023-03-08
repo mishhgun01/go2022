@@ -2,21 +2,15 @@ package links
 
 import (
 	"fmt"
-	"math"
 	"math/rand"
 	"sync"
 )
 
 const (
 	// Набор символов для сокращения ссылки
-	shortChars = "abcdefghijklmnopqrstuvwxyz123456789"
-	// Длинна короткой ссылки
-	urlLen = 6
-)
-
-var (
-	// Максимально возможное число ссылок для заданного набора символов и длины короткой ссылки
-	maxUrls = int(math.Pow(float64(len([]byte(shortChars))), urlLen))
+	allChars = "abcdefghijklmnopqrstuvwxyz123456789"
+	// Длина короткой ссылки
+	shortUrlLen = 6
 )
 
 var (
@@ -45,7 +39,7 @@ func (db *DB) NewLink(url string) string {
 	db.mu.Lock()
 	short := ""
 	for {
-		short = randomString(urlLen)
+		short = randomString(shortUrlLen)
 		res := ""
 		for _, shortLink := range db.links {
 			if shortLink.Short == short {
@@ -79,7 +73,7 @@ func (db *DB) Link(link string) string {
 }
 
 func randomString(n int) string {
-	letters := []rune(shortChars)
+	letters := []rune(allChars)
 
 	b := make([]rune, n)
 	for i := range b {
